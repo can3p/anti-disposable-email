@@ -15,8 +15,7 @@ import (
 	"github.com/go-git/go-git/v5/storage/memory"
 )
 
-const header = `
-// Copyright 2020-22 PJ Engineering and Business Solutions Pty. Ltd. All rights reserved.
+const header = `// Copyright 2020-22 PJ Engineering and Business Solutions Pty. Ltd. All rights reserved.
 
 package disposable
 
@@ -27,13 +26,13 @@ package disposable
 var DisposableList = map[string]struct{}{
 `
 
-const footer = `
-}
+const footer = `}
 `
 
-func getPaddedFmt(maxLen int) string {
-	// two spaces to keep gofmt happy
-	return "\t%-" + strconv.Itoa(maxLen+2) + "q: {},\n"
+func printPadded(domain string, maxLen int) string {
+	val := fmt.Sprintf("%q:", domain)
+	// three spaces to keep gofmt happy
+	return fmt.Sprintf("\t%-"+strconv.Itoa(maxLen+3)+"s {},\n", val)
 }
 
 func Update(ctx context.Context, target string) error {
@@ -91,10 +90,8 @@ func Update(ctx context.Context, target string) error {
 
 	_, _ = tf.WriteString(header)
 
-	format := getPaddedFmt(maxLength)
-
 	for _, domain := range newList {
-		_, _ = tf.WriteString(fmt.Sprintf(format, domain))
+		_, _ = tf.WriteString(printPadded(domain, maxLength))
 	}
 
 	_, _ = tf.WriteString(footer)
