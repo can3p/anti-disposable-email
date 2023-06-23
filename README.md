@@ -1,17 +1,3 @@
-<p align="right">
-  ⭐ &nbsp;&nbsp;<strong>the project to show your appreciation.</strong> :arrow_upper_right:
-</p>
-
-<p align="right">
-  <a href="https://pkg.go.dev/github.com/rocketlaunchr/anti-disposable-email"><img src="http://godoc.org/github.com/rocketlaunchr/anti-disposable-email?status.svg" /></a>
-  <a href="https://goreportcard.com/report/github.com/rocketlaunchr/anti-disposable-email"><img src="https://goreportcard.com/badge/github.com/rocketlaunchr/anti-disposable-email" /></a>
-  <a href="https://gocover.io/github.com/rocketlaunchr/anti-disposable-email"><img src="http://gocover.io/_badge/github.com/rocketlaunchr/anti-disposable-email" /></a>
-</p>
-
-<p align="center">
-	<img src="https://github.com/rocketlaunchr/anti-disposable-email/raw/master/logo.png" alt="anti-disposable-email" />
-</p>
-
 # Anti Disposable Email Address Checker for Go
 
 If you want to detect if new account registrations are using disposable email services, then this is your package.
@@ -22,18 +8,18 @@ If you want to detect if new account registrations are using disposable email se
 
 
 ```
-go get -u github.com/rocketlaunchr/anti-disposable-email
+go get -u github.com/can3p/anti-disposable-email
 ```
 
 ```go
-import "github.com/rocketlaunchr/anti-disposable-email"
+import "github.com/can3p/anti-disposable-email"
 ```
 
 
 ## Usage
 
 ```go
-import "github.com/rocketlaunchr/anti-disposable-email"
+import "github.com/can3p/anti-disposable-email"
 
 ParsedEmail, _ := disposable.ParseEmail("rocketlaunchr.cloud@gmail.com")
 ````
