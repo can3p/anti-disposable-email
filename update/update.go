@@ -5,21 +5,43 @@ package update
 import (
 	"bufio"
 	"context"
-	"sync"
+	"fmt"
+	"os"
+	"sort"
+	"strconv"
 
 	"github.com/go-git/go-billy/v5/memfs"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
 )
 
-// Update can be used to update the list of disposable email domains.
-// It uses the regularly updated list found here: https://github.com/martenson/disposable-email-domains.
-func Update(ctx context.Context, list *map[string]struct{}, lock ...sync.Locker) error {
+const header = `
+// Copyright 2020-22 PJ Engineering and Business Solutions Pty. Ltd. All rights reserved.
+
+package disposable
+
+// DisposableList is the list of domains that are considered to be
+// from disposable email service providers. See: https://github.com/martenson/disposable-email-domains.
+//
+// NOTE: To update the list, refer to the 'update' sub-package.
+var DisposableList = map[string]struct{}{
+`
+
+const footer = `
+}
+`
+
+func getPaddedFmt(maxLen int) string {
+	// two spaces to keep gofmt happy
+	return "\t%-" + strconv.Itoa(maxLen+2) + "q: {},\n"
+}
+
+func Update(ctx context.Context, target string) error {
 
 	fs := memfs.New()
 
 	opts := &git.CloneOptions{
-		URL:   "https://github.com/martenson/disposable-email-domains",
+		URL:   "https://github.com/disposable-email-domains/disposable-email-domains",
 		Depth: 0,
 	}
 
@@ -33,11 +55,18 @@ func Update(ctx context.Context, list *map[string]struct{}, lock ...sync.Locker)
 		return err
 	}
 
-	newList := make(map[string]struct{}, 3500)
+	newList := []string{}
+	maxLength := 0
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		newList[scanner.Text()] = struct{}{}
+		domain := scanner.Text()
+
+		if len(domain) > maxLength {
+			maxLength = len(domain)
+		}
+
+		newList = append(newList, domain)
 	}
 
 	err = file.Close()
@@ -50,12 +79,25 @@ func Update(ctx context.Context, list *map[string]struct{}, lock ...sync.Locker)
 		return err
 	}
 
-	if len(lock) > 0 && lock[0] != nil {
-		lock[0].Lock()
-		defer lock[0].Unlock()
+	sort.SliceStable(newList, func(i, j int) bool {
+		return newList[i] < newList[j]
+	})
+
+	tf, err := os.Create(target)
+
+	if err != nil {
+		return err
 	}
 
-	*list = newList
+	_, _ = tf.WriteString(header)
+
+	format := getPaddedFmt(maxLength)
+
+	for _, domain := range newList {
+		_, _ = tf.WriteString(fmt.Sprintf(format, domain))
+	}
+
+	_, _ = tf.WriteString(footer)
 
 	return nil
 }

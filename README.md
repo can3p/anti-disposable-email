@@ -61,13 +61,10 @@ If you want to block duplicate email addresses from your database, then store as
 
 ### Update
 
-This package can auto-update the disposable domain list. It uses the regularly updated list from [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains).
+To get the latest list run the following script and commit
 
-```go
-import "github.com/rocketlaunchr/anti-disposable-email"
-import "github.com/rocketlaunchr/anti-disposable-email/update"
-
-update.Update(ctx, &disposable.DisposableList)
+```bash
+go run scripts/update.go
 ```
 
 
