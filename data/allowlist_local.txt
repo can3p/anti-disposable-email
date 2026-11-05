@@ -1,0 +1,81 @@
+# Hand-maintained allowlist. Domains here are never reported as disposable or
+# relay, whatever the upstream lists say. cmd/update-lists merges this file
+# with the upstream allowlist into allowlist.txt.
+#
+# Add a domain here when an upstream list flags a real mailbox provider.
+
+# Large webmail providers
+gmail.com
+googlemail.com
+outlook.com
+hotmail.com
+live.com
+msn.com
+yahoo.com
+ymail.com
+rocketmail.com
+aol.com
+icloud.com
+me.com
+mac.com
+mail.com
+gmx.com
+gmx.de
+gmx.net
+web.de
+t-online.de
+zoho.com
+zohomail.com
+yandex.ru
+yandex.com
+ya.ru
+mail.ru
+rambler.ru
+qq.com
+163.com
+126.com
+naver.com
+daum.net
+rediffmail.com
+seznam.cz
+wp.pl
+o2.pl
+onet.pl
+interia.pl
+libero.it
+virgilio.it
+orange.fr
+free.fr
+laposte.net
+ukr.net
+
+# Privacy-focused mailbox providers (real mailboxes, not throwaway)
+proton.me
+protonmail.com
+protonmail.ch
+pm.me
+tutanota.com
+tuta.io
+tutamail.com
+tuta.com
+fastmail.com
+fastmail.fm
+hey.com
+mailbox.org
+posteo.de
+posteo.net
+hushmail.com
+disroot.org
+riseup.net
+
+# ISP mail
+comcast.net
+verizon.net
+att.net
+sbcglobal.net
+bellsouth.net
+cox.net
+charter.net
+btinternet.com
+sky.com
+virginmedia.com

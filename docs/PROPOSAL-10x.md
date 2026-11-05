@@ -1,6 +1,9 @@
 # Proposal: make anti-disposable-email 10x more effective
 
-Status: draft · Date: 2026-11-05
+Status: phase 1 implemented (see README, "What's missing"); phases 2–4 deferred · Date: 2026-11-05
+
+> Sections 1 and 2 describe the package before phase 1. Section 4 (the
+> `Checker` API) was not built: phase 1 extended `ParseEmail` instead.
 
 ## 1. Where we are today
 
