@@ -1,0 +1,38 @@
+name: update-lists
+
+# Regenerates data/*.txt from the upstream lists and opens a pull request.
+# Requires "Allow GitHub Actions to create and approve pull requests" under
+# Settings > Actions > General > Workflow permissions.
+
+on:
+  schedule:
+    - cron: "17 4 1 * *" # 04:17 UTC on the 1st of every month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Regenerate lists
+        run: go run ./cmd/update-lists
+      - name: Test against the new lists
+        run: go test ./...
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/update-lists
+          commit-message: Update disposable domain lists
+          title: Update disposable domain lists
+          body: |
+            Monthly regeneration of `data/*.txt` by `go run ./cmd/update-lists`.
+
+            Tests passed against the new lists. Merge, tag a release, then run
+            `go get -u github.com/can3p/anti-disposable-email` in dependent projects.
+          delete-branch: true
